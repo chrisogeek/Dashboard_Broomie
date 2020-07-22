@@ -1,0 +1,134 @@
+*{
+    margin:0 ;
+    padding:0;
+}
+
+header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    width:100% ;
+    max-width: 1024px;
+    height: 164px;
+    /* border: solid 1px brown; */
+    list-style: none;
+    margin: auto;
+    background-color: #FAFAFA;
+
+}
+
+
+.navbar-log{
+    width: 185px;
+    height: 58px;
+
+}
+/* 
+Cuando tengo un elemento en la sección, div
+se desconfigura la iamges y medidas. Hablarle a las etiquetas hijo.
+*/
+.navbar-user img {
+    width: 66px;
+    height: 61px;
+}
+
+
+.navbar-menu {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-left: 10px;
+/*         border:  solid 1px brown; */
+}
+
+.main-graphics{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin: 20px;
+    gap: 50px;
+    border: solid 5px blue;
+}
+
+.graphics{
+    border: solid 5px green;
+}
+
+.user_graphics{
+    border: solid 5px brown;
+}
+
+
+.barchart{
+    display: grid;
+    grid-template-columns: 1fr;
+    height: 300px;
+    margin: auto;
+    border: 1px #707070 solid;
+
+}
+
+
+.rect_svg{
+    fill: #900C3F;
+    padding: 50px;
+    margin-left: 10px;
+}
+
+.circle{
+    border: 1px solid black;
+    border-radius:  100%;
+}
+
+.circle:hover{
+    fill:rgba(168, 25, 25, 0);
+    transform: 
+        translate3d(-50px)
+        scale(1.2);
+    transition: all 500ms;
+}
+
+
+
+.exterior:hover{
+    fill:rgb(255, 78, 78);
+    transform: 
+        translate3d(-25px)
+        scale(1.2);
+    transition: all 1000ms;
+}
+
+.ext:hover{
+    fill:rgb(255, 78, 78);
+    transform: 
+        translate3d(-25px)
+        scale(1.2);
+    transition: all 500ms;
+}
+
+.interior:hover{
+    fill:rgb(255, 78, 78);
+    transform: 
+        translate3d(-25px)
+        scale(1.2);
+    transition: all 200ms;
+
+}
+
+.int:hover{
+    fill:rgb(255, 78, 78);
+    transform: 
+        translate3d(-25px)
+        scale(1.2);
+    transition: all 200ms;
+
+}
+
+
+.rectTest{
+    fill: red;
+    stroke-width: 10px;
+    stroke: black;
+
+}
+

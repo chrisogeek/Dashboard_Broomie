@@ -1,2 +1,2 @@
 # Dashboard_Broomie
-Project at Platzi Master
+This repository is for educational porpouse.
