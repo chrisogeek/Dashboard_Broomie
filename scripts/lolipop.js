@@ -9,104 +9,72 @@
 
 function dataload(){
     //Esto es una llamada asincorna, cuando termine la parsea
-    d3.csv("/dataSets/typeofRoomies.csv").then(function(d){
+    d3.csv("/dataSets/test.csv").then(function(d){
         data = d;
-        //Creo un {indice para todos mis números}
-        data.forEach(function(d,i){
-            d.order = i
-        });
         console.log(data)
-        lolipop();
+        lolipop()
     });
 }
 
 dataload()
 
-
-
 function lolipop(){
-  // set the dimensions and margins of the graph
-    var margin = {top: 30, right: 30, bottom: 70, left: 60},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    // set the dimensions and margins of the graph
+    var margin = {top: 10, right: 30, bottom: 90, left: 40},
+        width = 460 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
-var svg = d3.select("#lolipop")
+    // append the svg object to the body of the page
+    var svg = d3.select("#lolipop")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
-
-    // Initialize the X axis
-    var x = d3.scaleBand()
-    .range([ 0, width ])
-    .padding(1);
-    var xAxis = svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-
-    // Initialize the Y axis
-    var y = d3.scaleLinear()
-    .range([ height, 0]);
-    var yAxis = svg.append("g")
-    .attr("class", "myYaxis")
-
-
-    // A function that create / update the plot for a given variable:
-    function update(selectedVar) {
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
 
     // Parse the Data
-    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/barplot_change_data.csv", function(data) {
+   /*  d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", function(data) { */
 
     // X axis
-    x.domain(data.map(function(d) { return d.group; }))
-    xAxis.transition().duration(1000).call(d3.axisBottom(x))
+    var x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(data.map(function(d) { return d.group; }))
+    .padding(1);
+    svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
 
     // Add Y axis
-    y.domain([0, d3.max(data, function(d) { return +d[selectedVar] }) ]);
-    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+    var y = d3.scaleLinear()
+    .domain([0, 400])
+    .range([ height, 0]);
+    svg.append("g")
+    .call(d3.axisLeft(y));
 
-    // variable u: map data to existing circle
-    var j = svg.selectAll(".myLine")
+    // Lines
+    svg.selectAll("myline")
     .data(data)
-    // update lines
-    j
     .enter()
     .append("line")
-    .attr("class", "myLine")
-    .merge(j)
-    .transition()
-    .duration(1000)
-        .attr("x1", function(d) { console.log(x(d.group)) ; return x(d.group); })
+        .attr("x1", function(d) { return x(d.group); })
         .attr("x2", function(d) { return x(d.group); })
-        .attr("y1", y(0))
-        .attr("y2", function(d) { return y(d[selectedVar]); })
+        .attr("y1", function(d) { return y(d.var1); })
+        .attr("y2", y(0))
         .attr("stroke", "grey")
 
-
-    // variable u: map data to existing circle
-    var u = svg.selectAll("circle")
+    // Circles
+    svg.selectAll("mycircle")
     .data(data)
-    // update bars
-    u
     .enter()
     .append("circle")
-    .merge(u)
-    .transition()
-    .duration(1000)
         .attr("cx", function(d) { return x(d.group); })
-        .attr("cy", function(d) { return y(d[selectedVar]); })
-        .attr("r", 8)
-        .attr("fill", "#69b3a2");
-
-
-    })
-
-    }
-
-    // Initialize plot
-    update('var1')
-
+        .attr("cy", function(d) { return y(d.var1); })
+        .attr("r", "4")
+        .style("fill", "#69b3a2")
+        .attr("stroke", "black")
 
 }
