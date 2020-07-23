@@ -22,8 +22,7 @@ dataload()
 function piechart(){
 }
 
-//Para la vista generals de los host
-//La idea es que la grafica se organice
+
 
 function barchart(){
 
