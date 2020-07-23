@@ -154,3 +154,15 @@ se desconfigura la iamges y medidas. Hablarle a las etiquetas hijo.
 
 }
 
+
+
+/*  
+Grafvity force
+
+*/
+
+.node circle {
+    stroke-width: .5px;
+    stroke: #3a403d;
+    
+  }
