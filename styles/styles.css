@@ -69,11 +69,33 @@ se desconfigura la iamges y medidas. Hablarle a las etiquetas hijo.
 }
 
 
-.rect_svg{
+.rect_barchart{
     fill: #900C3F;
     padding: 50px;
     margin-left: 10px;
+    
 }
+
+.rect_barchart:hover{
+    fill:#30050e7e;
+    transform:
+        translate3d(-50px)
+        scale(1.2);
+        transition: all 500ms;
+    width: 15px;
+}
+
+/* Tooltip ■■■■■■■■■■■■■■■■■■■■■■ */
+
+.tooltip{
+    background-color: #900c3f;
+    color: white;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+
+/* Circulos */
 
 .circle{
     border: 1px solid black;
