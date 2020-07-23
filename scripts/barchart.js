@@ -1,26 +1,14 @@
 
 /*
 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ BARCHART
-
-Primer gráfico: BarChart
-
-Data set: daily_interactions
-* Generar Fechas entre 19-20.
-
-Pregunta:
-
-¿Qué día de la semana te visitan más?
-
-
-
-Requisito_Chart:
-
-Debe mostrar:
-Gráfico de barras con los días de más frecuencia semanal.
-
-Sugerencia:
-
-Tus tres mejores días son () aprovecha esta temporada y  promociona tu anuncio y así conseguirás más roomies.
+    * Data set: daily_interactions
+    * Pregunta: ¿Qué día de la semana te visitan más?
+    * Requisito_Chart: Gráfico de barras con tooltip para  mostrar interacciones
+            de los usuarios en los mil primeros días.
+        Oportunidad de mejora: Que me los muestre por mis n habitaciones según Host.
+    * Ayuda al usario:host: Idea  de como se comportaron las visitas a mis cuartos
+    consejos de mejorar la publicación o amplair los servicios.
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 */
 
@@ -41,14 +29,15 @@ dataload()
 
 
 function barchart(){
-    // set the dimensions and margins of the graph
-    // set the dimensions and margins of the graph
+
 // set the dimensions and margins of the graph
+// Ajusto las dimensiones del gráfico respecto a las márgenes.
 var margin = {top: 10, right: 30, bottom: 30, left: 40},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-// append the svg object to the body of the page
+
+// Hago la selección vacía del id y allí pongo mi etiquta svg 
     var svg = d3.select("#barchart")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -57,22 +46,26 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-// get the data
-/* d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
- */
-  // X axis: scale and draw:
+  // Eje x: Escala
     var x = d3.scaleLinear()
-        .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+        .domain([0, d3.max(data, function(d) { return + d.id})])     // Doy el dominio como la totalidad de los días por id
         .range([0, width]);
+    // Hago el grupo para el transform
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(x));
 
-  // set the parameters for the histogram
+  // Ajusto los parámetros del histograma vacío.
+  /*
+  1. Necesito un valor para el vector
+  2. Luego atribuirle el dominio de la gráfica
+  3. Y bindear los datos, y ajustarle el  treshold para que sea visualmente representativo
+
+  */
     var histogram = d3.histogram()
-        .value(function(d) { return d.interactions; })   // I need to give the vector of value
-        .domain(x.domain())  // then the domain of the graphic
-        .thresholds(x.ticks(70)); // then the numbers of bins
+        .value(function(d) { return d.interactions; })   
+        .domain(x.domain())  
+        .thresholds(x.ticks(30)); 
 
     // And apply this function to data to get the bins
     var bins = histogram(data);
@@ -104,7 +97,7 @@ var margin = {top: 10, right: 30, bottom: 30, left: 40},
         .duration(100)
         .style("opacity", 1)
         tooltip
-        .html("Range: " + d.x0 + " - " + d.x1)
+        .html("Entre : " + d.x0 + " - " + d.x1+ " interacciones por día")
         .style("left", (d3.mouse(this)[0]+20) + "px")
         .style("top", (d3.mouse(this)[1]) + "px")
     }
