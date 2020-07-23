@@ -24,71 +24,117 @@ Tus tres mejores días son () aprovecha esta temporada y  promociona tu anuncio 
 
 */
 
+function dataload(){
+    //Esto es una llamada asincorna, cuando termine la parsea
+    d3.csv("/dataSets/daily_interactions.csv").then(function(d){
+        data = d;
+        //Creo un {indice para todos mis números}
+        data.forEach(function(d,i){
+            d.order = i
+        });
+        console.log(data)
+        barchart();
+    });
+}
+
+dataload()
+
+
 function barchart(){
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 40, left: 100},
-        width = 460 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    // set the dimensions and margins of the graph
+// set the dimensions and margins of the graph
+var margin = {top: 10, right: 30, bottom: 30, left: 40},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-    // append the svg object to the body of the page
-    var svg = d3.select(".graphics")
-        .append("svg")
+// append the svg object to the body of the page
+    var svg = d3.select("#barchart")
+    .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    // Parse the Data
-    d3.csv("https://raw.githubusercontent.com/Alejandro-sin/Dashboard_Broomie/master/dataSets/daily_interactions.csv", function(data) {
-
-    // sort data
-    data.sort(function(b, a) {
-        return a.Value - b.Value;
-    });
-
-    // Add X axis
-        var x = d3.scaleLinear()
-        .domain([0, 13000])
-        .range([ 0, width]);
-        svg.append("g")
+// get the data
+/* d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
+ */
+  // X axis: scale and draw:
+    var x = d3.scaleLinear()
+        .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+        .range([0, width]);
+    svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end");
+        .call(d3.axisBottom(x));
 
-    // Y axis
-        var y = d3.scaleBand()
-        .range([ 0, height ])
-        .domain(data.map(function(d) { return d.rooms; }))
-        .padding(1);
-        svg.append("g")
-        .call(d3.axisLeft(y))
+  // set the parameters for the histogram
+    var histogram = d3.histogram()
+        .value(function(d) { return d.interactions; })   // I need to give the vector of value
+        .domain(x.domain())  // then the domain of the graphic
+        .thresholds(x.ticks(70)); // then the numbers of bins
 
-        // Lines
-        svg.selectAll("myline")
-        .data(data)
+    // And apply this function to data to get the bins
+    var bins = histogram(data);
+
+    // Y axis: scale and draw:
+    var y = d3.scaleLinear()
+        .range([height, 0]);
+        y.domain([0, d3.max(bins, function(d) { return d.length; })]);
+        // d3.hist has to be called before the Y axis obviously
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+  // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
+  // Its opacity is set to 0: we don't see it by default.
+    var tooltip = d3.select("#barchart")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "black")
+        .style("color", "white")
+        .style("border-radius", "5px")
+        .style("padding", "10px")
+
+  // A function that change this tooltip when the user hover a point.
+  // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+    var showTooltip = function(d) {
+        tooltip
+        .transition()
+        .duration(100)
+        .style("opacity", 1)
+        tooltip
+        .html("Range: " + d.x0 + " - " + d.x1)
+        .style("left", (d3.mouse(this)[0]+20) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+    }
+    var moveTooltip = function(d) {
+        tooltip
+        .style("left", (d3.mouse(this)[0]+20) + "px")
+        .style("top", (d3.mouse(this)[1]) + "px")
+    }
+    // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
+    var hideTooltip = function(d) {
+        tooltip
+        .transition()
+        .duration(100)
+        .style("opacity", 0)
+    }
+
+    // append the bar rectangles to the svg element
+    svg.selectAll("rect")
+        .data(bins)
         .enter()
-        .append("line")
-            .attr("x1", function(d) { return x(d.interactions); })
-            .attr("x2", x(0))
-            .attr("y1", function(d) { return y(d.rooms); })
-            .attr("y2", function(d) { return y(d.rooms); })
-            .attr("stroke", "grey")
-
-        // Circles
-        svg.selectAll("mycircle")
-        .data(data)
-        .enter()
-        .append("circle")
-            .attr("cx", function(d) { return x(d.Value); })
-            .attr("cy", function(d) { return y(d.rooms); })
-            .attr("r", "7")
+        .append("rect")
+            .attr("x", 1)
+            .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+            .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
+            .attr("height", function(d) { return height - y(d.length); })
             .style("fill", "#69b3a2")
-            .attr("stroke", "black")
-        })
+            // Show tooltip on hover
+            .on("mouseover", showTooltip )
+            .on("mousemove", moveTooltip )
+            .on("mouseleave", hideTooltip )
 
     }
 
-barchart()
