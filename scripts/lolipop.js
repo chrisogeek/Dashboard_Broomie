@@ -1,19 +1,15 @@
 /*
-■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ TREEMAP
+■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ LOLIPOP
     * Data set: typeofrooms
-    * Pregunta: ¿No sabes cuanto cobrar?
-    * Requisito_Chart: Gráfico de barras con tooltip para  mostrar interacciones
-            de los usuarios en los mil primeros días.
-        Oportunidad de mejora: Que me los muestre por mis n habitaciones según Host.
-    * Ayuda al usario:host: Idea  de como se comportaron las visitas a mis cuartos
-    consejos de mejorar la publicación o amplair los servicios.
+    * Pregunta: ¡¿Conoces a tus roomies?
+    * Requisito_Chart: Mostrar un lolipop según variables que pertencen a las preferencias de los usuarios
 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 */
 
 function dataload(){
     //Esto es una llamada asincorna, cuando termine la parsea
-    d3.csv("/dataSets/typeofrooms.csv").then(function(d){
+    d3.csv("/dataSets/typeofRoomies.csv").then(function(d){
         data = d;
         //Creo un {indice para todos mis números}
         data.forEach(function(d,i){
