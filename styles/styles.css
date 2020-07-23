@@ -166,3 +166,15 @@ Grafvity force
     stroke: #3a403d;
     
   }
+
+
+button{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-radius: 70px;
+    background-color: #900c3f;
+    color: white;
+    border-radius: 6px;
+    padding: 10px;
+
+}

@@ -9,7 +9,7 @@
 
 function dataload(){
     //Esto es una llamada asincorna, cuando termine la parsea
-    d3.csv("/dataSets/test.csv").then(function(d){
+    d3.csv("/dataSets/typeofRoomies.csv").then(function(d){
         data = d;
         console.log(data)
         lolipop()
@@ -37,8 +37,9 @@ function lolipop(){
     // X axis
     var x = d3.scaleBand()
     .range([ 0, width ])
-    .domain(data.map(function(d) { return d.group; }))
+    .domain(data.map(function(d) { return d.room; }))
     .padding(1);
+
     svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x))
@@ -58,9 +59,9 @@ function lolipop(){
     .data(data)
     .enter()
     .append("line")
-        .attr("x1", function(d) { return x(d.group); })
-        .attr("x2", function(d) { return x(d.group); })
-        .attr("y1", function(d) { return y(d.var1); })
+        .attr("x1", function(d) { return x(d.room); })
+        .attr("x2", function(d) { return x(d.room); })
+        .attr("y1", function(d) { return y(d.gym); })
         .attr("y2", y(0))
         .attr("stroke", "grey")
 
@@ -69,10 +70,11 @@ function lolipop(){
     .data(data)
     .enter()
     .append("circle")
-        .attr("cx", function(d) { return x(d.group); })
-        .attr("cy", function(d) { return y(d.var1); })
+        .attr("class","lolipopCircle")
+        .attr("cx", function(d) { return x(d.room); })
+        .attr("cy", function(d) { return y(d.gym); })
         .attr("r", "10")
-        .style("fill", "#69b3a2")
+        .style("fill", "#900C3F")
         .attr("stroke", "black")
 
 }
