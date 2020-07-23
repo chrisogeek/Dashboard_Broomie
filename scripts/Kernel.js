@@ -1,4 +1,4 @@
-// set the dimensions and margins of the graph
+/* // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 50},
     width = 700 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
@@ -92,4 +92,4 @@ function kernelEpanechnikov(k) {
   return function(v) {
     return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
   };
-}
+} */
