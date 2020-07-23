@@ -33,9 +33,7 @@ function lolipop(){
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    // Parse the Data
-   /*  d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", function(data) { */
-
+ 
     // X axis
     var x = d3.scaleBand()
     .range([ 0, width ])
@@ -50,7 +48,7 @@ function lolipop(){
 
     // Add Y axis
     var y = d3.scaleLinear()
-    .domain([0, 400])
+    .domain([0, 1000])
     .range([ height, 0]);
     svg.append("g")
     .call(d3.axisLeft(y));
@@ -73,8 +71,9 @@ function lolipop(){
     .append("circle")
         .attr("cx", function(d) { return x(d.group); })
         .attr("cy", function(d) { return y(d.var1); })
-        .attr("r", "4")
+        .attr("r", "10")
         .style("fill", "#69b3a2")
         .attr("stroke", "black")
 
 }
+
